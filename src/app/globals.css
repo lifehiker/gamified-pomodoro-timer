@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 27% 7%;
+    --foreground: 0 0% 95%;
+    --card: 230 27% 9%;
+    --card-foreground: 0 0% 95%;
+    --popover: 230 27% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 154 100% 50%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 230 27% 12%;
+    --secondary-foreground: 0 0% 80%;
+    --muted: 230 27% 12%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 230 27% 15%;
+    --accent-foreground: 0 0% 90%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 230 27% 14%;
+    --input: 230 27% 14%;
+    --ring: 154 100% 50%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground font-sans;
+    background-color: #0a0a18;
+    color: #f0f0f0;
+  }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@layer utilities {
+  .neon-green { color: #00ff88; }
+  .neon-orange { color: #ff6b35; }
+  .neon-cyan { color: #4ecdc4; }
+  .neon-yellow { color: #ffd93d; }
+  .glow-green { filter: drop-shadow(0 0 8px #00ff88); }
+  .glow-orange { filter: drop-shadow(0 0 8px #ff6b35); }
+  .text-shadow-neon { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff8860; }
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0d0d20; }
+::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a5e; }
