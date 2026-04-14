@@ -119,3 +119,73 @@
 - **Status**: Completed
 - **Implementation**: `src/app/layout.tsx`, `tailwind.config.ts`, `src/app/globals.css`
 - **Date modified**: 2026-04-13
+
+---
+
+## Improvements (2026-04-14)
+
+### localStorage Persistence for Gamification Data
+- **Description**: All gamification state (totalPoints, level, streak, longestStreak, totalSessions, sessionHistory, achievements) now persists to localStorage under the key pomodoroData. Data is hydrated on mount and saved on every change. Users never lose progress on page refresh.
+- **Status**: Completed
+- **Implementation**: src/providers/TimerProvider.tsx
+- **Date modified**: 2026-04-14
+
+### Session History Tracking
+- **Description**: Every completed session is stored as a StoredSession record (id, type, completedAt ISO string, duration in minutes, pointsEarned) in the sessionHistory array within localStorage. Used to power real analytics charts.
+- **Status**: Completed
+- **Implementation**: src/providers/TimerProvider.tsx, src/types/index.ts
+- **Date modified**: 2026-04-14
+
+### Streak Logic
+- **Description**: Streak increments on the first work session of each new day. If the last session date was yesterday, streak increases. If older, streak resets to 1. Multiple sessions on the same day do not double-count. longestStreak is also tracked and persisted.
+- **Status**: Completed
+- **Implementation**: src/providers/TimerProvider.tsx
+- **Date modified**: 2026-04-14
+
+### Achievement Unlock System
+- **Description**: Achievements are now unlocked automatically when conditions are met after each session: first_pomodoro (1 session), ten_sessions (10), hundred_sessions (100), five_day_streak (5-day streak), level_10 (level 10), early_bird (session before 8am). Unlocked state persists to localStorage.
+- **Status**: Completed
+- **Implementation**: src/providers/TimerProvider.tsx, src/types/index.ts
+- **Date modified**: 2026-04-14
+
+### Achievement Toast Notification
+- **Description**: When a new achievement is unlocked, a slide-in toast appears in the bottom-right corner showing the achievement icon, title, and description. Auto-dismisses after 3.5 seconds.
+- **Status**: Completed
+- **Implementation**: src/components/timer/PomodoroTimer.tsx, src/app/globals.css
+- **Date modified**: 2026-04-14
+
+### Real Analytics Charts
+- **Description**: WeeklyChart and DailyFocusChart now pull real data from TimerProvider context (sessionHistory) instead of random mock data. Weekly chart shows actual session counts per day; daily focus chart shows actual focused minutes per day.
+- **Status**: Completed
+- **Implementation**: src/components/analytics/WeeklyChart.tsx, src/components/analytics/DailyFocusChart.tsx
+- **Date modified**: 2026-04-14
+
+### Real Achievement Badges
+- **Description**: AchievementBadges component now reads live unlock state from TimerProvider context instead of static hardcoded data. Unlocked badges glow in neon green; locked badges are dimmed.
+- **Status**: Completed
+- **Implementation**: src/components/analytics/AchievementBadge.tsx
+- **Date modified**: 2026-04-14
+
+### Analytics Page Stats Summary
+- **Description**: Analytics page now shows four summary stat cards at the top: Total Sessions, Current Streak, Longest Streak, and Total Points -- all live from TimerProvider.
+- **Status**: Completed
+- **Implementation**: src/app/analytics/page.tsx
+- **Date modified**: 2026-04-14
+
+### Focus Mode Full-Screen Layout
+- **Description**: When Focus Mode is active, the dashboard hides the navbar, task list, and stats bar. The timer is centered full-screen on a darker background. Exiting focus mode restores the full layout.
+- **Status**: Completed
+- **Implementation**: src/app/dashboard/page.tsx
+- **Date modified**: 2026-04-14
+
+### StatsBar Uses Real Streak
+- **Description**: StatsBar now reads the streak value directly from TimerProvider context instead of accepting it as a prop defaulting to 0. StreakDisplay is shown only when streak > 0.
+- **Status**: Completed
+- **Implementation**: src/components/gamification/StatsBar.tsx
+- **Date modified**: 2026-04-14
+
+### Production Dockerfile
+- **Description**: Multi-stage Dockerfile added for production deployment. Stage 1 installs production deps, Stage 2 builds the Next.js app, Stage 3 creates a minimal runner image using the standalone output. Runs as a non-root nextjs user.
+- **Status**: Completed
+- **Implementation**: Dockerfile
+- **Date added**: 2026-04-14
