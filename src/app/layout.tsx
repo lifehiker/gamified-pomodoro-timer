@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Orbitron, Space_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { TimerProvider } from "@/providers/TimerProvider";
+import { SessionProvider } from "@/providers/SessionProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 const orbitron = Orbitron({
@@ -35,10 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`dark ${orbitron.variable} ${spaceMono.variable} ${inter.variable}`}>
       <body>
-        <TimerProvider>
-          {children}
-          <Toaster />
-        </TimerProvider>
+        <SessionProvider>
+          <TimerProvider>
+            {children}
+            <Toaster />
+          </TimerProvider>
+        </SessionProvider>
       </body>
     </html>
   );
