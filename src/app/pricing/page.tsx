@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
@@ -46,7 +46,7 @@ export default function PricingPage() {
 
   const handleUpgrade = async () => {
     if (!session) {
-      signIn("google", { callbackUrl: "/pricing" });
+      router.push("/auth/signin?callbackUrl=/pricing");
       return;
     }
     setUpgrading(true);
