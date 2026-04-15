@@ -1,218 +1,91 @@
 # Features
 
-## Gamified Pomodoro Timer
-
-### Core Timer
-- **Description**: Circular countdown timer supporting work, short break, and long break session types. Plays an audio chime on completion using the Web Audio API.
-- **Status**: Completed
-- **Implementation**: `src/components/timer/PomodoroTimer.tsx`, `src/components/timer/CircularTimer.tsx`, `src/providers/TimerProvider.tsx`
-- **Date added**: 2026-04-13
-
-### XP & Leveling System
-- **Description**: Users earn XP points per completed session (10 for work, 5 for short break, 2 for long break). Points accumulate into levels (100 pts/level) with a level-up animation on progression.
-- **Status**: Completed
-- **Implementation**: `src/providers/TimerProvider.tsx`, `src/components/gamification/XPBar.tsx`
-- **Date added**: 2026-04-13
-
-### Streak Display
-- **Description**: Shows a daily streak count with a fire emoji and visual highlight when streak is active.
-- **Status**: Completed
-- **Implementation**: `src/components/gamification/StreakDisplay.tsx`
-- **Date added**: 2026-04-13
-
-### Task Management
-- **Description**: Local task list with add/complete/delete. Tasks track estimated vs. actual pomodoros. Active task can be linked to a timer session. Persists to localStorage.
-- **Status**: Completed
-- **Implementation**: `src/components/tasks/TaskList.tsx`, `src/components/tasks/TaskItem.tsx`
-- **Date added**: 2026-04-13
-
-### Focus Mode
-- **Description**: Toggle to signal distraction-free focus. Button toggles between FOCUS MODE and EXIT FOCUS MODE with neon orange highlight.
-- **Status**: Completed (UI toggle only; no additional UI hiding currently)
-- **Implementation**: `src/components/timer/PomodoroTimer.tsx`, `src/providers/TimerProvider.tsx`
-- **Date added**: 2026-04-13
-
-### Achievements
-- **Description**: Grid of achievement badges (First Focus, On Fire, Getting Serious, Centurion, Veteran, Early Bird). Unlock logic fully wired via TimerProvider — achievements unlock automatically as conditions are met and persist to localStorage.
-- **Status**: Completed (dynamic unlock tracking implemented and tested)
-- **Implementation**: `src/components/analytics/AchievementBadge.tsx`, `src/providers/TimerProvider.tsx`
-- **Date modified**: 2026-04-14
-
-### Analytics — Weekly Chart
-- **Description**: Bar chart showing sessions per day for the past 7 days. Uses recharts. Today's bar highlighted in neon green.
-- **Status**: Completed (shows mock data; real data via API planned)
-- **Implementation**: `src/components/analytics/WeeklyChart.tsx`
-- **Date added**: 2026-04-13
-
-### Analytics — Daily Focus Chart
-- **Description**: Area chart showing focus minutes per day for the past 14 days. Uses recharts.
-- **Status**: Completed (shows mock data; real data via API planned)
-- **Implementation**: `src/components/analytics/DailyFocusChart.tsx`
-- **Date added**: 2026-04-13
-
-### Navbar with Live XP
-- **Description**: Fixed top navigation with links to Dashboard, Stats, and Config. Compact XP bar visible on desktop showing current level and progress.
-- **Status**: Completed
-- **Implementation**: `src/components/layout/Navbar.tsx`
-- **Date added**: 2026-04-13
-
-### Settings Page
-- **Description**: In-app settings for all timer durations (work, short break, long break, long break interval), daily goal, auto-start toggles, and sound toggle. Settings saved to localStorage and immediately applied via TimerProvider.
-- **Status**: Completed
-- **Implementation**: `src/app/settings/page.tsx`
-- **Date added**: 2026-04-13
-
-### Google Auth (NextAuth v5)
-- **Description**: Sign in with Google via NextAuth v5 with database sessions stored through Prisma adapter.
-- **Status**: Completed (backend configured; sign-in UI flow not yet surfaced in pages)
-- **Implementation**: `src/lib/auth.ts`, `src/app/api/auth/[...nextauth]/route.ts`
-- **Date added**: 2026-04-13
-
-### Stripe Subscriptions
-- **Description**: Checkout session creation and webhook handler for Pro subscription. Stores subscription state (customer ID, subscription ID, price ID, period end, status) in database.
-- **Status**: Completed (backend complete; Pro gating in UI not yet implemented)
-- **Implementation**: `src/lib/stripe.ts`, `src/app/api/subscribe/route.ts`, `src/app/api/webhooks/stripe/route.ts`
-- **Date added**: 2026-04-13
-
-### Persistent Session Logging (API)
-- **Description**: REST endpoint to create/list Pomodoro sessions per user in the database. Awards points and increments task pomodoro count on session completion.
-- **Status**: Completed
-- **Implementation**: `src/app/api/sessions/route.ts`
-- **Date added**: 2026-04-13
-
-### User Stats API
-- **Description**: REST endpoint returning total points, level, streak data, and session counts (today / this week / all time) for authenticated users.
-- **Status**: Completed
-- **Implementation**: `src/app/api/stats/route.ts`
-- **Date added**: 2026-04-13
-
-### Task API (CRUD)
-- **Description**: REST endpoints to create, list, update (including completion), and delete tasks scoped to the authenticated user.
-- **Status**: Completed
-- **Implementation**: `src/app/api/tasks/route.ts`, `src/app/api/tasks/[id]/route.ts`
-- **Date added**: 2026-04-13
+## PomodoroQuest — Gamified Pomodoro Timer
 
 ---
 
-## Code Quality & Bug Fixes (2026-04-13)
-
-### Auto-start Logic Fix
-- **Description**: Fixed incorrect auto-start behavior in `COMPLETE_SESSION` reducer. Previously, either auto-start setting would trigger both break and work auto-starts. Now correctly uses `autoStartBreaks` when transitioning from work to break, and `autoStartPomodoros` when transitioning from break to work.
-- **Status**: Completed
-- **Implementation**: `src/providers/TimerProvider.tsx`
-- **Date modified**: 2026-04-13
-
-### Timer Reset on Settings Change Fix
-- **Description**: Fixed a bug where changing any setting (e.g., toggling sound) would reset the running timer's countdown. Settings changes now only recalculate `timeLeft` when the timer is not running.
-- **Status**: Completed
-- **Implementation**: `src/providers/TimerProvider.tsx`
-- **Date modified**: 2026-04-13
-
-### Hydration Mismatch Fix (Charts)
-- **Description**: Moved `Math.random()`-based mock data generation in WeeklyChart and DailyFocusChart from module scope into `useState` lazy initializers. This prevents SSR/client hydration mismatches caused by different random values on server vs. client.
-- **Status**: Completed
-- **Implementation**: `src/components/analytics/WeeklyChart.tsx`, `src/components/analytics/DailyFocusChart.tsx`
-- **Date modified**: 2026-04-13
-
-### Font Loading Migration
-- **Description**: Migrated from `<link>` Google Fonts tags in `<head>` to `next/font/google` with CSS variable injection. Eliminates the `no-page-custom-font` lint warning and improves font performance (preloading, font-display swap, self-hosted).
-- **Status**: Completed
-- **Implementation**: `src/app/layout.tsx`, `tailwind.config.ts`, `src/app/globals.css`
-- **Date modified**: 2026-04-13
+### 1. Gamified Pomodoro Timer
+**Description:** Circular countdown timer with session-type color coding. Awards XP points on completion: 10pts/work, 5pts/short break, 2pts/long break. Level up every 100 points with animated notification. Web Audio API chime on session end.
+**Status:** completed
+**Implementation:** `src/components/timer/PomodoroTimer.tsx`, `src/components/timer/CircularTimer.tsx`, `src/providers/TimerProvider.tsx`
+**Date:** 2026-04-14
 
 ---
 
-## Improvements (2026-04-14)
+### 2. Analytics Dashboard
+**Description:** Visual productivity insights including a 7-day sessions bar chart, 14-day focus time area chart (Recharts), and stat cards for total sessions, current streak, longest streak, and total points.
+**Status:** completed
+**Implementation:** `src/app/analytics/page.tsx`, `src/components/analytics/WeeklyChart.tsx`, `src/components/analytics/DailyFocusChart.tsx`
+**Date:** 2026-04-14
 
-### localStorage Persistence for Gamification Data
-- **Description**: All gamification state (totalPoints, level, streak, longestStreak, totalSessions, sessionHistory, achievements) now persists to localStorage under the key pomodoroData. Data is hydrated on mount and saved on every change. Users never lose progress on page refresh.
-- **Status**: Completed
-- **Implementation**: src/providers/TimerProvider.tsx
-- **Date modified**: 2026-04-14
+---
 
-### Session History Tracking
-- **Description**: Every completed session is stored as a StoredSession record (id, type, completedAt ISO string, duration in minutes, pointsEarned) in the sessionHistory array within localStorage. Used to power real analytics charts.
-- **Status**: Completed
-- **Implementation**: src/providers/TimerProvider.tsx, src/types/index.ts
-- **Date modified**: 2026-04-14
+### 3. Task Management
+**Description:** Add, complete, and delete tasks. Track estimated vs actual pomodoros per task. Link active task to current timer session. All data persists to localStorage.
+**Status:** completed
+**Implementation:** `src/components/tasks/TaskList.tsx`, `src/components/tasks/TaskItem.tsx`
+**Date:** 2026-04-14
 
-### Streak Logic
-- **Description**: Streak increments on the first work session of each new day. If the last session date was yesterday, streak increases. If older, streak resets to 1. Multiple sessions on the same day do not double-count. longestStreak is also tracked and persisted.
-- **Status**: Completed
-- **Implementation**: src/providers/TimerProvider.tsx
-- **Date modified**: 2026-04-14
+---
 
-### Achievement Unlock System
-- **Description**: Achievements are now unlocked automatically when conditions are met after each session: first_pomodoro (1 session), ten_sessions (10), hundred_sessions (100), five_day_streak (5-day streak), level_10 (level 10), early_bird (session before 8am). Unlocked state persists to localStorage.
-- **Status**: Completed
-- **Implementation**: src/providers/TimerProvider.tsx, src/types/index.ts
-- **Date modified**: 2026-04-14
+### 4. Customizable Sessions
+**Description:** Settings page allowing users to configure work duration, short/long break durations, long break interval, auto-start toggles for breaks and pomodoros, daily session goal, and sound notifications. All settings persist to localStorage.
+**Status:** completed
+**Implementation:** `src/app/settings/page.tsx`
+**Date:** 2026-04-14
 
-### Achievement Toast Notification
-- **Description**: When a new achievement is unlocked, a slide-in toast appears in the bottom-right corner showing the achievement icon, title, and description. Auto-dismisses after 3.5 seconds.
-- **Status**: Completed
-- **Implementation**: src/components/timer/PomodoroTimer.tsx, src/app/globals.css
-- **Date modified**: 2026-04-14
+---
 
-### Real Analytics Charts
-- **Description**: WeeklyChart and DailyFocusChart now pull real data from TimerProvider context (sessionHistory) instead of random mock data. Weekly chart shows actual session counts per day; daily focus chart shows actual focused minutes per day.
-- **Status**: Completed
-- **Implementation**: src/components/analytics/WeeklyChart.tsx, src/components/analytics/DailyFocusChart.tsx
-- **Date modified**: 2026-04-14
+### 5. Focus Mode
+**Description:** Toggle that hides the navbar and task list, centering the timer full-screen on a darker background (#050510). Eliminates distractions during active sessions. Exit button restores full layout.
+**Status:** completed
+**Implementation:** `src/app/dashboard/page.tsx`, `src/components/timer/PomodoroTimer.tsx`
+**Date:** 2026-04-14
 
-### Real Achievement Badges
-- **Description**: AchievementBadges component now reads live unlock state from TimerProvider context instead of static hardcoded data. Unlocked badges glow in neon green; locked badges are dimmed.
-- **Status**: Completed
-- **Implementation**: src/components/analytics/AchievementBadge.tsx
-- **Date modified**: 2026-04-14
+---
 
-### Analytics Page Stats Summary
-- **Description**: Analytics page now shows four summary stat cards at the top: Total Sessions, Current Streak, Longest Streak, and Total Points -- all live from TimerProvider.
-- **Status**: Completed
-- **Implementation**: src/app/analytics/page.tsx
-- **Date modified**: 2026-04-14
+### 6. Achievement System
+**Description:** 6 achievements that unlock based on usage milestones: First Focus (1st session), On Fire (5-day streak), Getting Serious (10 sessions), Centurion (100 sessions), Veteran (level 10), Early Bird (session before 8am). Toast notification appears on unlock.
+**Status:** completed
+**Implementation:** `src/providers/TimerProvider.tsx`, `src/components/analytics/AchievementBadge.tsx`, `src/types/index.ts`
+**Date:** 2026-04-14
 
-### Focus Mode Full-Screen Layout
-- **Description**: When Focus Mode is active, the dashboard hides the navbar, task list, and stats bar. The timer is centered full-screen on a darker background. Exiting focus mode restores the full layout.
-- **Status**: Completed
-- **Implementation**: src/app/dashboard/page.tsx
-- **Date modified**: 2026-04-14
+---
 
-### StatsBar Uses Real Streak
-- **Description**: StatsBar now reads the streak value directly from TimerProvider context instead of accepting it as a prop defaulting to 0. StreakDisplay is shown only when streak > 0.
-- **Status**: Completed
-- **Implementation**: src/components/gamification/StatsBar.tsx
-- **Date modified**: 2026-04-14
+### 7. Streak Tracking
+**Description:** Tracks daily work session streaks (consecutive days with at least one completed work session). Calculates and persists both current streak and longest streak ever. Resets if a day is missed.
+**Status:** completed
+**Implementation:** `src/providers/TimerProvider.tsx`
+**Date:** 2026-04-14
 
-### Production Dockerfile
-- **Description**: Multi-stage Dockerfile added for production deployment. Stage 1 installs production deps, Stage 2 builds the Next.js app, Stage 3 creates a minimal runner image using the standalone output. Runs as a non-root nextjs user.
-- **Status**: Completed
-- **Implementation**: Dockerfile
-- **Date added**: 2026-04-14
+---
 
+### 8. User Authentication (Credentials)
+**Description:** Email + password registration and login via NextAuth v5. Passwords hashed with bcrypt (12 rounds). JWT session strategy. Registration endpoint validates input and checks for duplicate emails. Auth is optional — app works fully without an account.
+**Status:** completed
+**Implementation:** `src/lib/auth.ts`, `src/app/auth/signin/page.tsx`, `src/app/api/auth/register/route.ts`
+**Date:** 2026-04-14
 
-## Bug Fixes (2026-04-14)
+---
 
-### sessionsCompleted Hydration Fix
-- **Description**: Fixed a bug where today session count reset to 0 on page reload. HYDRATE reducer now computes sessionsCompleted from sessionHistory.
-- **Status**: Completed
-- **Implementation**: src/providers/TimerProvider.tsx
-- **Date modified**: 2026-04-14
+### 9. Subscription / Pricing Page
+**Description:** Pricing page showing Free vs Pro tiers with feature comparison. Stripe checkout integration ready via API routes. App works fully without Stripe credentials configured — payment buttons are shown but processing is disabled when keys are absent.
+**Status:** completed
+**Implementation:** `src/app/pricing/page.tsx`, `src/app/api/subscribe/route.ts`, `src/app/api/webhooks/stripe/route.ts`
+**Date:** 2026-04-14
 
-### Scanline Overlay Z-Index Fix
-- **Description**: Fixed body::before z-index from 9999 to 1, preventing it from overlaying toasts.
-- **Status**: Completed
-- **Implementation**: src/app/globals.css
-- **Date modified**: 2026-04-14
+---
 
-### Duplicate slide-in Keyframe Removed
-- **Description**: Removed conflicting slide-in keyframe from tailwind.config.ts.
-- **Status**: Completed
-- **Implementation**: tailwind.config.ts
-- **Date modified**: 2026-04-14
+### 10. XP / Level System
+**Description:** Persistent XP points and level display in navbar (compact) and stats bar (full). Level = floor(totalPoints / 100) + 1. XP bar shows progress to next level. Level-up animation shown on timer.
+**Status:** completed
+**Implementation:** `src/components/gamification/XPBar.tsx`, `src/components/gamification/StatsBar.tsx`, `src/providers/TimerProvider.tsx`
+**Date:** 2026-04-14
 
-### Dockerfile Cleanup
-- **Description**: Removed unused deps stage from Dockerfile.
-- **Status**: Completed
-- **Implementation**: Dockerfile
-- **Date modified**: 2026-04-14
+---
+
+### 11. Server-Side Data APIs
+**Description:** REST API routes for syncing sessions, tasks, and stats to SQLite database for authenticated users. Currently frontend uses localStorage; APIs available for future full sync implementation.
+**Status:** completed
+**Implementation:** `src/app/api/sessions/route.ts`, `src/app/api/tasks/route.ts`, `src/app/api/stats/route.ts`
+**Date:** 2026-04-14

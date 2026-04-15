@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -13,6 +13,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   totalPoints   Int       @default(0)
@@ -71,8 +72,8 @@ model VerificationToken {
 model Subscription {
   id                     String    @id @default(cuid())
   userId                 String    @unique
-  stripeCustomerId       String?   @unique
-  stripeSubscriptionId   String?   @unique
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?
   stripePriceId          String?
   stripeCurrentPeriodEnd DateTime?
   status                 String    @default("free")
