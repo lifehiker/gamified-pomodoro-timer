@@ -22,7 +22,7 @@ export default function SignInPage() {
       const result = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/",
         redirect: false,
       });
       if (result?.error) {
@@ -63,7 +63,7 @@ export default function SignInPage() {
       const result = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/",
         redirect: false,
       });
       if (result?.url) {

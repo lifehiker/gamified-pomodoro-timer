@@ -106,7 +106,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               <Link
-                href="/dashboard"
+                href="/"
                 className="block text-center font-mono text-sm font-bold tracking-widest px-6 py-3 rounded-xl border border-[#1a1a2e] text-gray-300 hover:border-gray-500 hover:text-white transition-all duration-200"
               >
                 GET STARTED FREE

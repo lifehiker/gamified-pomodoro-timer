@@ -7,7 +7,7 @@ import { XPBar } from "@/components/gamification/XPBar";
 import { Timer, BarChart2, Settings, Zap, Sparkles } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/dashboard", label: "TIMER", icon: Timer },
+  { href: "/", label: "TIMER", icon: Timer },
   { href: "/analytics", label: "STATS", icon: BarChart2 },
   { href: "/pricing", label: "PRICING", icon: Sparkles },
   { href: "/settings", label: "CONFIG", icon: Settings },
