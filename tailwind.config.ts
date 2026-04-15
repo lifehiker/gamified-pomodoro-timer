@@ -59,16 +59,11 @@ const config: Config = {
           "50%": { transform: "scale(1.5)", opacity: "0.8" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
-        "slide-in": {
-          from: { transform: "translateX(-100%)" },
-          to: { transform: "translateX(0)" },
-        },
       },
       animation: {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "fade-in": "fade-in 0.3s ease-out",
         "level-up": "level-up 0.5s ease-in-out",
-        "slide-in": "slide-in 0.3s ease-out",
       },
     },
   },

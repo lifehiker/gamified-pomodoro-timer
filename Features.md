@@ -33,10 +33,10 @@
 - **Date added**: 2026-04-13
 
 ### Achievements
-- **Description**: Grid of achievement badges (First Focus, On Fire, Getting Serious, Centurion, Veteran, Early Bird). Currently static/locked — unlock logic not yet wired.
-- **Status**: In-progress (UI complete; dynamic unlock tracking planned)
-- **Implementation**: `src/components/analytics/AchievementBadge.tsx`
-- **Date added**: 2026-04-13
+- **Description**: Grid of achievement badges (First Focus, On Fire, Getting Serious, Centurion, Veteran, Early Bird). Unlock logic fully wired via TimerProvider — achievements unlock automatically as conditions are met and persist to localStorage.
+- **Status**: Completed (dynamic unlock tracking implemented and tested)
+- **Implementation**: `src/components/analytics/AchievementBadge.tsx`, `src/providers/TimerProvider.tsx`
+- **Date modified**: 2026-04-14
 
 ### Analytics — Weekly Chart
 - **Description**: Bar chart showing sessions per day for the past 7 days. Uses recharts. Today's bar highlighted in neon green.
@@ -189,3 +189,30 @@
 - **Status**: Completed
 - **Implementation**: Dockerfile
 - **Date added**: 2026-04-14
+
+
+## Bug Fixes (2026-04-14)
+
+### sessionsCompleted Hydration Fix
+- **Description**: Fixed a bug where today session count reset to 0 on page reload. HYDRATE reducer now computes sessionsCompleted from sessionHistory.
+- **Status**: Completed
+- **Implementation**: src/providers/TimerProvider.tsx
+- **Date modified**: 2026-04-14
+
+### Scanline Overlay Z-Index Fix
+- **Description**: Fixed body::before z-index from 9999 to 1, preventing it from overlaying toasts.
+- **Status**: Completed
+- **Implementation**: src/app/globals.css
+- **Date modified**: 2026-04-14
+
+### Duplicate slide-in Keyframe Removed
+- **Description**: Removed conflicting slide-in keyframe from tailwind.config.ts.
+- **Status**: Completed
+- **Implementation**: tailwind.config.ts
+- **Date modified**: 2026-04-14
+
+### Dockerfile Cleanup
+- **Description**: Removed unused deps stage from Dockerfile.
+- **Status**: Completed
+- **Implementation**: Dockerfile
+- **Date modified**: 2026-04-14

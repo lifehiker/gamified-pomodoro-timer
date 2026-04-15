@@ -231,7 +231,11 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
       return { ...state, showLevelUp: false };
     case 'DISMISS_ACHIEVEMENT':
       return { ...state, newAchievement: null };
-    case 'HYDRATE':
+    case 'HYDRATE': {
+      const todayStr = toDateStr(new Date());
+      const todaySessions = action.payload.sessionHistory.filter(
+        (s) => s.type === 'work' && s.completedAt.slice(0, 10) === todayStr
+      ).length;
       return {
         ...state,
         totalPoints: action.payload.totalPoints,
@@ -242,7 +246,9 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         totalSessions: action.payload.totalSessions,
         sessionHistory: action.payload.sessionHistory,
         achievements: action.payload.achievements,
+        sessionsCompleted: todaySessions,
       };
+    }
     default:
       return state;
   }
