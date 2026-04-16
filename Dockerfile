@@ -1,11 +1,15 @@
 FROM node:20-slim AS deps
 WORKDIR /app
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
 COPY package.json package-lock.json* ./
 RUN npm ci --ignore-scripts
 
 FROM node:20-slim AS builder
 WORKDIR /app
+
+ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -23,6 +27,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV AUTH_SECRET="forge-app-default-secret-override-in-production"
 ENV AUTH_TRUST_HOST="true"
 ENV NEXT_PUBLIC_APP_URL=""
