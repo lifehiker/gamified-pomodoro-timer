@@ -21,6 +21,18 @@ function getDailyFocusData(sessionHistory: { type: string; completedAt: string; 
 export function DailyFocusChart() {
   const { state } = useTimer();
   const chartData = getDailyFocusData(state.sessionHistory);
+  const hasData = chartData.some((day) => day.minutes > 0);
+
+  if (!hasData) {
+    return (
+      <div className='flex h-48 items-center justify-center rounded-[1.5rem] border border-dashed border-white/10 bg-black/10 px-6 text-center'>
+        <div>
+          <div className='font-orbitron text-lg text-white'>No focus minutes yet</div>
+          <p className='mt-2 font-mono text-xs text-slate-500'>Your last 14 days will chart here once you finish a work session.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='h-48'>
@@ -32,9 +44,9 @@ export function DailyFocusChart() {
               <stop offset='95%' stopColor='#4ecdc4' stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey='date' tick={{ fill: '#6b7280', fontSize: 10, fontFamily: 'Space Mono' }} axisLine={false} tickLine={false} interval={3} />
-          <YAxis tick={{ fill: '#6b7280', fontSize: 10, fontFamily: 'Space Mono' }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={{ background: '#0d0d20', border: '1px solid #2a2a3e', borderRadius: '8px', color: '#fff', fontFamily: 'Space Mono', fontSize: '12px' }} formatter={(value: string | number) => [String(value) + ' min', 'Focus Time']} />
+          <XAxis dataKey='date' tick={{ fill: '#6b7280', fontSize: 10, fontFamily: 'var(--font-plex-mono)' }} axisLine={false} tickLine={false} interval={3} />
+          <YAxis tick={{ fill: '#6b7280', fontSize: 10, fontFamily: 'var(--font-plex-mono)' }} axisLine={false} tickLine={false} />
+          <Tooltip contentStyle={{ background: '#0d0d20', border: '1px solid #2a2a3e', borderRadius: '8px', color: '#fff', fontFamily: 'var(--font-plex-mono)', fontSize: '12px' }} formatter={(value: string | number) => [String(value) + ' min', 'Focus Time']} />
           <Area type='monotone' dataKey='minutes' stroke='#4ecdc4' strokeWidth={2} fill='url(#focusGradient)' style={{ filter: 'drop-shadow(0 0 4px #4ecdc4)' }} />
         </AreaChart>
       </ResponsiveContainer>

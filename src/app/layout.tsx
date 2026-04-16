@@ -1,29 +1,29 @@
 import type { Metadata } from "next";
-import { Orbitron, Space_Mono, Inter } from "next/font/google";
+import { Aldrich, IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { TimerProvider } from "@/providers/TimerProvider";
 import { SessionProvider } from "@/providers/SessionProvider";
 import { Toaster } from "@/components/ui/toaster";
 
-const orbitron = Orbitron({
+const aldrich = Aldrich({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-orbitron",
+  weight: ["400"],
+  variable: "--font-aldrich",
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  variable: "--font-space-mono",
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-inter",
+  variable: "--font-instrument-sans",
   display: "swap",
 });
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`dark ${orbitron.variable} ${spaceMono.variable} ${inter.variable}`}>
+    <html lang="en" className={`dark ${aldrich.variable} ${plexMono.variable} ${instrumentSans.variable}`}>
       <body>
         <SessionProvider>
           <TimerProvider>

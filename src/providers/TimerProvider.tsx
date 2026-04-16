@@ -81,6 +81,24 @@ function savePersistedData(data: PersistedData): void {
   try { localStorage.setItem('pomodoroData', JSON.stringify(data)); } catch { /* ignore */ }
 }
 
+function incrementTaskPomodoro(taskId: string | null): void {
+  if (!taskId || typeof window === 'undefined') return;
+  try {
+    const raw = localStorage.getItem('tasks');
+    if (!raw) return;
+    const tasks = JSON.parse(raw) as Array<{ id: string; actualPomodoros?: number }>;
+    const updated = tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, actualPomodoros: (task.actualPomodoros ?? 0) + 1 }
+        : task
+    );
+    localStorage.setItem('tasks', JSON.stringify(updated));
+    window.dispatchEvent(new Event('tasks:updated'));
+  } catch {
+    /* ignore local task persistence errors */
+  }
+}
+
 const DEFAULT_SETTINGS: TimerSettings = {
   workDuration: 25, shortBreakDuration: 5, longBreakDuration: 15, longBreakInterval: 4,
   autoStartBreaks: false, autoStartPomodoros: false, dailyGoal: 8, soundEnabled: true,
@@ -188,6 +206,10 @@ function timerReducer(state: TimerState, action: TimerAction): TimerState {
         duration: getDurationMinutes(state.sessionType, state.settings),
         pointsEarned: points,
       };
+
+      if (isWork && state.currentTaskId) {
+        incrementTaskPomodoro(state.currentTaskId);
+      }
 
       const newSessionHistory = [...state.sessionHistory, newSession];
       const { updated: newAchievements, newKey } = checkNewAchievements(state.achievements, {

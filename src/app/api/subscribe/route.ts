@@ -11,12 +11,21 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_PRO_PRICE_ID) {
+      return NextResponse.json(
+        { error: "Stripe is not configured for this deployment yet." },
+        { status: 503 }
+      );
+    }
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: process.env.STRIPE_PRO_PRICE_ID, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+      success_url: `${appUrl}/?success=true`,
+      cancel_url: `${appUrl}/pricing`,
       customer_email: session.user.email,
       metadata: { userId: session.user.id },
     });

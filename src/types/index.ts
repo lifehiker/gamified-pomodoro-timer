@@ -18,6 +18,7 @@ export interface Task {
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
   createdAt: string;
+  completedAt?: string | null;
 }
 
 export interface UserStats {

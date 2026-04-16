@@ -41,9 +41,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        orbitron: ["var(--font-orbitron)", "sans-serif"],
-        mono: ["var(--font-space-mono)", "monospace"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        orbitron: ["var(--font-aldrich)", "sans-serif"],
+        mono: ["var(--font-plex-mono)", "monospace"],
+        sans: ["var(--font-instrument-sans)", "sans-serif"],
       },
       keyframes: {
         "pulse-glow": {

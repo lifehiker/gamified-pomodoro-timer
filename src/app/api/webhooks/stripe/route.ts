@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { prisma } from "@/lib/prisma";
+import { updateSubscriptionByStripeId, upsertSubscription } from "@/lib/data-store";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -20,23 +20,15 @@ export async function POST(req: NextRequest) {
       const userId = checkoutSession.metadata?.userId;
       if (userId && checkoutSession.subscription) {
         const subscription = await stripe.subscriptions.retrieve(checkoutSession.subscription as string);
-        await prisma.subscription.upsert({
-          where: { userId },
-          create: {
-            userId,
-            stripeCustomerId: checkoutSession.customer as string,
-            stripeSubscriptionId: subscription.id,
-            stripePriceId: subscription.items.data[0].price.id,
-            stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
-            status: "active",
-          },
-          update: {
-            stripeCustomerId: checkoutSession.customer as string,
-            stripeSubscriptionId: subscription.id,
-            stripePriceId: subscription.items.data[0].price.id,
-            stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
-            status: "active",
-          },
+        await upsertSubscription({
+          userId,
+          stripeCustomerId: checkoutSession.customer as string,
+          stripeSubscriptionId: subscription.id,
+          stripePriceId: subscription.items.data[0]?.price.id ?? null,
+          stripeCurrentPeriodEnd: subscription.items.data[0]
+            ? new Date(subscription.current_period_end * 1000).toISOString()
+            : null,
+          status: "active",
         });
       }
       break;
@@ -44,12 +36,9 @@ export async function POST(req: NextRequest) {
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
       const subscription = event.data.object as Stripe.Subscription;
-      await prisma.subscription.updateMany({
-        where: { stripeSubscriptionId: subscription.id },
-        data: {
-          status: subscription.status === "active" ? "active" : "inactive",
-          stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
-        },
+      await updateSubscriptionByStripeId(subscription.id, {
+        status: subscription.status === "active" ? "active" : "inactive",
+        stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
       });
       break;
     }
