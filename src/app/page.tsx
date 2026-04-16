@@ -1,87 +1,60 @@
-'use client';
-import { Navbar } from '@/components/layout/Navbar';
-import { PomodoroTimer } from '@/components/timer/PomodoroTimer';
-import { TaskList } from '@/components/tasks/TaskList';
-import { StatsBar } from '@/components/gamification/StatsBar';
-import { useTimer } from '@/providers/TimerProvider';
+import Link from "next/link";
+import { Navbar } from "@/components/layout/Navbar";
 
-export default function DashboardPage() {
-  const { state } = useTimer();
-  const { isFocusMode, currentTaskId, sessionsCompleted, settings, streak, totalPoints } = state;
-
+export default function HomePage() {
   return (
-    <div className={'min-h-screen transition-all duration-500 ' + (isFocusMode ? 'bg-[#050913]' : '')}>
-      {!isFocusMode && <Navbar />}
-      <main className={isFocusMode ? 'pt-0' : 'pt-14'}>
-        <div className='max-w-7xl mx-auto px-4 py-8 relative z-10'>
-          {isFocusMode ? (
-            <div className='min-h-screen flex items-center justify-center'>
-              <div className='panel-card panel-outline rounded-[2rem] p-12 flex items-center justify-center'>
-                <PomodoroTimer />
-              </div>
-            </div>
-          ) : (
-            <div className='grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-6 xl:gap-8'>
-              <div className='flex flex-col gap-6'>
-                <div className='panel-card panel-outline rounded-[2rem] p-6 sm:p-8'>
-                  <div className='flex flex-col gap-5 md:flex-row md:items-end md:justify-between mb-8'>
-                    <div className='space-y-3 max-w-xl'>
-                      <div className='font-mono text-[11px] section-label'>Focus Console</div>
-                      <h1 className='font-orbitron text-3xl sm:text-4xl text-white leading-tight'>
-                        A command deck for deliberate work.
-                      </h1>
-                      <p className='text-sm sm:text-base text-slate-300/86 max-w-lg'>
-                        Run focused sprints, stack streaks, and keep a live line of sight on today&apos;s progress without losing the ritual.
-                      </p>
-                    </div>
-                    <div className='grid grid-cols-2 gap-3 min-w-full md:min-w-[280px] md:max-w-[360px]'>
-                      <div className='rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3'>
-                        <div className='font-mono text-[10px] section-label'>Today</div>
-                        <div className='font-orbitron text-2xl text-neon-green mt-2'>{sessionsCompleted}</div>
-                        <div className='font-mono text-[11px] text-slate-400'>of {settings.dailyGoal} target rounds</div>
-                      </div>
-                      <div className='rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3'>
-                        <div className='font-mono text-[10px] section-label'>Task Link</div>
-                        <div className='font-orbitron text-xl text-neon-orange mt-2'>{currentTaskId ? 'ARMED' : 'IDLE'}</div>
-                        <div className='font-mono text-[11px] text-slate-400'>{currentTaskId ? 'Timer routed to a task' : 'Select a task to track effort'}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_240px] xl:items-center'>
-                    <div className='flex items-center justify-center'>
-                      <PomodoroTimer />
-                    </div>
-                    <div className='grid gap-3'>
-                      <div className='rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5'>
-                        <div className='font-mono text-[10px] section-label'>Momentum</div>
-                        <div className='mt-3 font-orbitron text-3xl text-white'>{streak}<span className='text-sm font-mono text-slate-400 ml-2'>day streak</span></div>
-                        <p className='mt-2 text-sm text-slate-300/75'>
-                          {streak > 0 ? 'Keep the chain alive with one more deliberate round today.' : 'Start the streak clock with a single focused session.'}
-                        </p>
-                      </div>
-                      <div className='rounded-[1.6rem] border border-white/10 bg-gradient-to-br from-neon-green/10 via-transparent to-neon-cyan/10 p-5'>
-                        <div className='font-mono text-[10px] section-label'>Power Reserve</div>
-                        <div className='mt-3 flex items-end gap-2'>
-                          <span className='font-orbitron text-3xl text-neon-green'>{totalPoints}</span>
-                          <span className='pb-1 font-mono text-xs text-slate-400'>XP banked</span>
-                        </div>
-                        <p className='mt-2 text-sm text-slate-300/75'>
-                          Every completed session pushes the next level threshold and unlocks more achievements.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+    <div className="min-h-screen">
+      <Navbar />
+      <main className="pt-14">
+        <section className="max-w-6xl mx-auto px-4 py-20 sm:py-28">
+          <div className="panel-card panel-outline rounded-[2rem] overflow-hidden">
+            <div className="grid gap-10 px-6 py-10 sm:px-10 sm:py-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+              <div className="space-y-6">
+                <div className="font-mono text-[11px] section-label">PomodoroQuest</div>
+                <div className="space-y-4">
+                  <h1 className="font-orbitron text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+                    Build a repeatable focus ritual.
+                  </h1>
+                  <p className="max-w-2xl text-base text-slate-300/80 sm:text-lg">
+                    Track deliberate work sessions, keep your streak alive, and move into the live dashboard when you are ready to start the timer.
+                  </p>
                 </div>
-                <div className='panel-card panel-outline rounded-[1.75rem] p-6'>
-                  <StatsBar />
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/dashboard"
+                    className="rounded-full border border-neon-green/50 bg-neon-green/10 px-6 py-3 font-mono text-xs tracking-[0.22em] text-neon-green transition-colors hover:bg-neon-green/15"
+                  >
+                    OPEN DASHBOARD
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="rounded-full border border-white/10 px-6 py-3 font-mono text-xs tracking-[0.22em] text-slate-200 transition-colors hover:bg-white/[0.04]"
+                  >
+                    VIEW PRICING
+                  </Link>
                 </div>
               </div>
-              <div className='panel-card panel-outline rounded-[2rem] p-6 min-h-[460px]'>
-                <TaskList />
+
+              <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div className="font-mono text-[10px] section-label">Sessions</div>
+                  <div className="mt-3 font-orbitron text-3xl text-neon-green">25 / 5</div>
+                  <p className="mt-2 text-sm text-slate-300/75">Pomodoro rounds with automatic break pacing.</p>
+                </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div className="font-mono text-[10px] section-label">Momentum</div>
+                  <div className="mt-3 font-orbitron text-3xl text-neon-orange">Streaks</div>
+                  <p className="mt-2 text-sm text-slate-300/75">Keep consistency visible instead of relying on memory.</p>
+                </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div className="font-mono text-[10px] section-label">Analytics</div>
+                  <div className="mt-3 font-orbitron text-3xl text-neon-cyan">Insight</div>
+                  <p className="mt-2 text-sm text-slate-300/75">Review focus volume, task effort, and progress over time.</p>
+                </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        </section>
       </main>
     </div>
   );

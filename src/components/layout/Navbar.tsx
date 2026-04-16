@@ -7,7 +7,7 @@ import { XPBar } from "@/components/gamification/XPBar";
 import { Timer, BarChart2, Settings, Zap, Sparkles } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/", label: "TIMER", icon: Timer },
+  { href: "/dashboard", label: "TIMER", icon: Timer },
   { href: "/analytics", label: "STATS", icon: BarChart2 },
   { href: "/pricing", label: "PRICING", icon: Sparkles },
   { href: "/settings", label: "CONFIG", icon: Settings },
@@ -22,7 +22,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#08111f]/78 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 min-h-16 py-3 flex flex-wrap items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+        <Link href="/dashboard" className="flex items-center gap-2.5 flex-shrink-0">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]">
             <Zap className="h-4 w-4 text-neon-green" style={{ filter: "drop-shadow(0 0 8px rgba(184,255,98,0.7))" }} />
           </div>
@@ -59,7 +59,7 @@ export function Navbar() {
                   {session.user?.name?.split(" ")[0]}
                 </span>
                 <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => signOut({ callbackUrl: "/dashboard" })}
                   className="font-mono text-[11px] text-slate-400 hover:text-white tracking-[0.22em] transition-colors px-3 py-2 rounded-full border border-white/10 hover:border-white/20"
                 >
                   SIGN OUT
