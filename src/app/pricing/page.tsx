@@ -43,8 +43,10 @@ export default function PricingPage() {
   const router = useRouter();
   const [upgrading, setUpgrading] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const handleUpgrade = async () => {
+    setCheckoutError(null);
     if (!session) {
       router.push("/auth/signin?callbackUrl=/pricing");
       return;
@@ -54,10 +56,12 @@ export default function PricingPage() {
       const res = await fetch("/api/subscribe", { method: "POST" });
       const data = await res.json();
       if (data?.url) {
-        router.push(data.url);
+        window.location.href = data.url;
+        return;
       }
+      setCheckoutError(data?.error || "Unable to start checkout right now.");
     } catch {
-      // handle error silently — user stays on page
+      setCheckoutError("Unable to start checkout right now.");
     } finally {
       setUpgrading(false);
     }
@@ -165,6 +169,11 @@ export default function PricingPage() {
               >
                 {upgrading ? "REDIRECTING..." : "UPGRADE TO PRO"}
               </button>
+              {checkoutError && (
+                <p className="mt-3 font-mono text-xs text-[#ffad49]">
+                  {checkoutError}
+                </p>
+              )}
             </div>
           </div>
 

@@ -1,12 +1,34 @@
 # Human Input Needed
 
-## Stripe Configuration for Pro Plan
+The app builds and runs without external credentials, but these values are needed to enable production auth and billing safely.
 
-The app has Stripe payment integration for the Pro plan ($3/month). The app works fully without Stripe credentials (all free features work), but to enable Pro plan upgrades, the following environment variables must be configured in Coolify:
+## Required for production deployment
 
-- `STRIPE_SECRET_KEY` - Stripe secret key (get from Stripe dashboard -> Developers -> API keys)
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key (same location)
-- `STRIPE_PRO_PRICE_ID` - The price ID for the $3/month subscription (create a product in Stripe dashboard -> Products, set to $3/month recurring, copy the price ID starting with `price_`)
-- `STRIPE_WEBHOOK_SECRET` - Webhook signing secret (Stripe dashboard -> Developers -> Webhooks, add endpoint at https://yourdomain.com/api/webhooks/stripe, copy the signing secret starting with whsec_)
+- `AUTH_SECRET`
+  Generate a long random secret and set it in your deployment environment.
+  Example: `openssl rand -base64 32`
 
-The app runs perfectly fine with zero env vars configured - only the Upgrade to Pro button will fail silently if Stripe is not configured.
+- `NEXT_PUBLIC_APP_URL`
+  Set this to the public HTTPS URL of the deployed app.
+  Example: `https://pomodoroquest.your-domain.com`
+
+## Required only if you want paid subscriptions enabled
+
+- `STRIPE_SECRET_KEY`
+  Your Stripe secret API key from the Stripe dashboard.
+
+- `STRIPE_PRO_PRICE_ID`
+  The Stripe Price ID for the `$3/month` subscription plan.
+
+- Webhook endpoint
+  In Stripe, create a webhook pointing to:
+  `https://your-domain.com/api/webhooks/stripe`
+
+  Subscribe it to the events your billing flow needs, then provide the signing secret as:
+  `STRIPE_WEBHOOK_SECRET`
+
+## Platform check outside the repo
+
+- Coolify resource setup
+  The deployment log `404 {"message":"No resources found."}` indicates Coolify could not find a target resource to deploy.
+  This is a Coolify configuration issue, not a Next.js build issue. Confirm the application resource exists and that the deploy action is targeting the correct resource ID/project.
