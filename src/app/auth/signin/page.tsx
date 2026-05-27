@@ -1,12 +1,9 @@
+"use client";
+import { useSearchParams } from "next/navigation";
 import { SignInScreen } from "./SignInScreen";
 
-export default async function SignInPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ callbackUrl?: string }>;
-}) {
-  const resolvedSearchParams = await searchParams;
-  const callbackUrl = resolvedSearchParams?.callbackUrl || "/dashboard";
-
+export default function SignInPage() {
+  const params = useSearchParams();
+  const callbackUrl = params.get("callbackUrl") || "/dashboard";
   return <SignInScreen callbackUrl={callbackUrl} />;
 }
