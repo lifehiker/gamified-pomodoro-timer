@@ -1,9 +1,11 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/layout/Navbar';
-import { WeeklyChart } from '@/components/analytics/WeeklyChart';
-import { DailyFocusChart } from '@/components/analytics/DailyFocusChart';
 import { AchievementBadges } from '@/components/analytics/AchievementBadge';
 import { useTimer } from '@/providers/TimerProvider';
+
+const WeeklyChart = dynamic(() => import('@/components/analytics/WeeklyChart').then((m) => ({ default: m.WeeklyChart })), { ssr: false });
+const DailyFocusChart = dynamic(() => import('@/components/analytics/DailyFocusChart').then((m) => ({ default: m.DailyFocusChart })), { ssr: false });
 
 export default function AnalyticsPage() {
   const { state } = useTimer();
