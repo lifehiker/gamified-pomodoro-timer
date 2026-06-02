@@ -13,7 +13,7 @@ export default function SignInPage() {
   // useSearchParams() triggers a CSR bailout; without a Suspense boundary it
   // errors during static prerender (`next build` with output: standalone).
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<SignInScreen callbackUrl="/dashboard" />}>
       <SignInPageInner />
     </Suspense>
   );
