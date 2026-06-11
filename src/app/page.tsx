@@ -1,8 +1,9 @@
 "use client";
+import { Suspense } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 
-export default function HomePage() {
+function HomeContent() {
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -58,5 +59,13 @@ export default function HomePage() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <HomeContent />
+    </Suspense>
   );
 }
