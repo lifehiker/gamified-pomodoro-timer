@@ -64,7 +64,18 @@ function HomeContent() {
 
 export default function HomePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen" />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen">
+          <main className="pt-14">
+            <section className="max-w-6xl mx-auto px-4 py-20">
+              <h1 className="font-orbitron text-4xl text-white">PomodoroQuest</h1>
+              <p className="mt-4 text-slate-300">Build a repeatable focus ritual.</p>
+            </section>
+          </main>
+        </div>
+      }
+    >
       <HomeContent />
     </Suspense>
   );
