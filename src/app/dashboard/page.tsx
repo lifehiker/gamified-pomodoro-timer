@@ -1,11 +1,12 @@
 'use client';
+import { Suspense } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { PomodoroTimer } from '@/components/timer/PomodoroTimer';
 import { TaskList } from '@/components/tasks/TaskList';
 import { StatsBar } from '@/components/gamification/StatsBar';
 import { useTimer } from '@/providers/TimerProvider';
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { state } = useTimer();
   const { isFocusMode, currentTaskId, sessionsCompleted, settings, streak, totalPoints } = state;
 
@@ -84,5 +85,24 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='min-h-screen'>
+          <main className='pt-14'>
+            <div className='max-w-7xl mx-auto px-4 py-8'>
+              <h1 className='font-orbitron text-3xl text-white'>Focus Console</h1>
+              <p className='mt-4 text-slate-300'>A command deck for deliberate work.</p>
+            </div>
+          </main>
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
